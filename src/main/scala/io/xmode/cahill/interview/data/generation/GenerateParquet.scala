@@ -53,12 +53,12 @@ object GenerateParquet {
       (split(0), split(1))
     }).toMap
 
-    val numLocations = if (optMap.contains(NUM_LOCATIONS)) optMap.get(NUM_LOCATIONS).toString.toInt else 1000
-    val numOutOfDateLocs = if (optMap.contains(NUM_OUT_OF_DATE_LOCATIONS)) optMap.get(NUM_OUT_OF_DATE_LOCATIONS).toString.toInt else 100
-    val percentLocationsNear = if (optMap.contains(PERCENT_LOCATIONS_NEAR)) optMap.get(PERCENT_LOCATIONS_NEAR).toString.toDouble else 0.75
-    val startDate = if (optMap.contains(STARTDATE)) new Date(optMap.get(STARTDATE).toString.toLong) else new Date(1526939409)
-    val endDate = if (optMap.contains(ENDDATE)) new Date(optMap.get(ENDDATE).toString.toLong) else new Date(1530741009)
-    val outputFile = if (optMap.contains(OUTPUT_FILE)) optMap.get(OUTPUT_FILE).toString else "/Users/cahillt/Desktop/myParquet.parquet"
+    val numLocations = if (optMap.contains(NUM_LOCATIONS)) optMap.getOrElse(NUM_LOCATIONS, "1000").toInt else 1000
+    val numOutOfDateLocs = if (optMap.contains(NUM_OUT_OF_DATE_LOCATIONS)) optMap.getOrElse(NUM_OUT_OF_DATE_LOCATIONS, "100").toInt else 100
+    val percentLocationsNear = if (optMap.contains(PERCENT_LOCATIONS_NEAR)) optMap.getOrElse(PERCENT_LOCATIONS_NEAR, "0.75").toDouble else 0.75
+    val startDate = if (optMap.contains(STARTDATE)) new Date(optMap.getOrElse(STARTDATE, "1526939409").toLong) else new Date(1526939409)
+    val endDate = if (optMap.contains(ENDDATE)) new Date(optMap.getOrElse(ENDDATE, "1530741009").toLong) else new Date(1530741009)
+    val outputFile = if (optMap.contains(OUTPUT_FILE)) optMap.getOrElse(OUTPUT_FILE, "/Users/cahillt/Desktop/myParquet.parquet") else "/Users/cahillt/Desktop/myParquet.parquet"
 
     val poi = csvToLocations(Thread.currentThread().getContextClassLoader.getClass.getResourceAsStream("/top100.csv"))
     val locations = generateLocations(numLocations,percentLocationsNear, poi, startDate, endDate)
